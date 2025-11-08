@@ -1,11 +1,11 @@
 @model IEnumerable<Assignment2_TripLogApp.Models.TripLog>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Trip Log";
 }
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Add Trip</a>
 </p>
 <table class="table">
     <thead>
@@ -14,10 +14,10 @@
                 @Html.DisplayNameFor(model => model.Destination)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                Start Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+                End Date
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Accommodation)
@@ -25,7 +25,6 @@
             <th>
                 Things to do
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -42,18 +41,17 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Accommodation)
-                @Html.DisplayFor(modelItem => item.AccommodationPhoneNumber)
-                @Html.DisplayFor(modelItem => item.AccommodationEmailAddress)
+                <br./>
+                Phone: @Html.DisplayFor(modelItem => item.AccommodationPhoneNumber)
+                <br/>
+                Email: @Html.DisplayFor(modelItem => item.AccommodationEmailAddress)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ToDo1)
+                <br/>
                 @Html.DisplayFor(modelItem => item.ToDo2)
+                <br/>
                 @Html.DisplayFor(modelItem => item.ToDo3)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TripId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TripId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TripId">Delete</a>
             </td>
         </tr>
 }
