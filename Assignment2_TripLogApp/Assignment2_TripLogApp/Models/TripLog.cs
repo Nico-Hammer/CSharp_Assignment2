@@ -19,15 +19,13 @@ public class TripLog
     [DataType(DataType.Date)]
     public DateTime EndDate { get; set; }
     
-    [Required]
     [Phone(ErrorMessage = "Please enter a valid phone number")]
     [Display(Name = "Phone Number")]
-    public string AccommodationPhoneNumber { get; set; }
+    public string? AccommodationPhoneNumber { get; set; }
     
-    [Required]
     [EmailAddress(ErrorMessage = "Please enter a valid email address")]
     [Display(Name = "Email Address")]
-    public string AccommodationEmailAddress { get; set; }
+    public string? AccommodationEmailAddress { get; set; }
     
     public string? ToDo1 { get; set; }
     public string? ToDo2 { get; set; }
