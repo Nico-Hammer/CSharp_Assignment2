@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assignment2_TripLogApp.Data;
 using Assignment2_TripLogApp.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Assignment2_TripLogApp.Controllers
 {
@@ -31,7 +33,8 @@ namespace Assignment2_TripLogApp.Controllers
         [HttpGet]
         public IActionResult BasicInfo()
         {
-            return View();
+            var tripLog = new TripLog();
+            return View(tripLog);
         }
 
         // POST: TripLogs/BasicInfo
@@ -39,13 +42,23 @@ namespace Assignment2_TripLogApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BasicInfo([Bind("TripId,Destination,Accommodation,StartDate,EndDate")] TripLog tripLog)
+        public async Task<IActionResult> BasicInfo(TripLog tripLog)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tripLog);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["Destination"] = tripLog.Destination;
+                TempData["Accommodation"] = tripLog.Accommodation;
+                TempData["StartDate"] = tripLog.StartDate;
+                TempData["EndDate"] = tripLog.EndDate;
+                TempData.Keep();
+                if (!tripLog.Accommodation.IsNullOrEmpty())
+                {
+                    return RedirectToAction("AccommodationInfo");
+                }
+                else
+                {
+                    return RedirectToAction("ThingsTodo");
+                }
             }
             return View(tripLog);
         }
@@ -54,14 +67,33 @@ namespace Assignment2_TripLogApp.Controllers
         [HttpGet]
         public async Task<IActionResult> AccommodationInfo()
         {
-            return View();
+            TripLog tripLog = new TripLog();
+            tripLog.Accommodation = TempData["Accommodation"].ToString();
+            TempData.Keep();
+            return View(tripLog);
+        }
+        
+        // POST: TripLogs/AccommodationInfo
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AccommodationInfo(TripLog tripLog)
+        {
+            TempData["AccommodationPhoneNumber"] = tripLog.AccommodationPhoneNumber;
+            TempData["AccommodationEmailAddress"] = tripLog.AccommodationEmailAddress;
+            TempData.Keep();
+            return RedirectToAction("ThingsTodo");
         }
 
         // GET: TripLogs/ThingsTodo
         [HttpGet]
         public async Task<IActionResult> ThingsTodo()
         {
-            return View();
+            TripLog tripLog = new TripLog();
+            tripLog.Destination = TempData["Destination"]?.ToString();
+            TempData.Keep();
+            return View(tripLog);
         }
 
         // POST: TripLogs/ThingsTodo
@@ -69,33 +101,38 @@ namespace Assignment2_TripLogApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ThingsTodo(int id, [Bind("TripId,Destination,Accommodation,StartDate,EndDate,AccommodationPhoneNumber,AccommodationEmailAddress,ToDo1,ToDo2,ToDo3")] TripLog tripLog)
+        public async Task<IActionResult> ThingsTodo(TripLog tripLog)
         {
-            if (id != tripLog.TripId)
+            TempData["ToDo1"] = tripLog.ToDo1;
+            TempData["ToDo2"] = tripLog.ToDo2;
+            TempData["ToDo3"] = tripLog.ToDo3;
+            tripLog.Destination = TempData["Destination"].ToString();
+            tripLog.Accommodation = TempData["Accommodation"]?.ToString();
+            tripLog.StartDate = Convert.ToDateTime(TempData["StartDate"]);
+            tripLog.EndDate = Convert.ToDateTime(TempData["EndDate"]);
+            tripLog.AccommodationPhoneNumber = TempData["AccommodationPhoneNumber"]?.ToString();
+            tripLog.AccommodationEmailAddress = TempData["AccommodationEmailAddress"]?.ToString();
+            tripLog.ToDo1 = TempData["ToDo1"]?.ToString();
+            tripLog.ToDo2 = TempData["ToDo2"]?.ToString();
+            tripLog.ToDo3 = TempData["ToDo3"]?.ToString();
+            TempData.Keep();
+            try
             {
-                return NotFound();
+                _context.Add(tripLog);
+                await _context.SaveChangesAsync();
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                try
+                if (!TripLogExists(tripLog.TripId))
                 {
-                    _context.Update(tripLog);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!TripLogExists(tripLog.TripId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
+            return RedirectToAction(nameof(Index));
             return View(tripLog);
         }
 
@@ -104,4 +141,4 @@ namespace Assignment2_TripLogApp.Controllers
             return _context.TripLogs.Any(e => e.TripId == id);
         }
     }
-}
+};

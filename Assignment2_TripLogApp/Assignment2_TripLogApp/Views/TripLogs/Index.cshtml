@@ -1,9 +1,17 @@
+@using Microsoft.IdentityModel.Tokens
 @model IEnumerable<Assignment2_TripLogApp.Models.TripLog>
 
 @{
     ViewData["Title"] = "My Trip Log";
 }
 
+@{
+    if (TempData["Destination"]?.ToString().Length > 0)
+    {
+        <h2>Trip to @TempData["Destination"] added</h2>
+    }
+    TempData.Clear();
+}
 <p>
     <a asp-action="BasicInfo">Add Trip</a>
 </p>
@@ -34,17 +42,27 @@
                 @Html.DisplayFor(modelItem => item.Destination)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+                @DateOnly.FromDateTime(item.StartDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
+                @DateOnly.FromDateTime(item.EndDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Accommodation)
-                <br./>
-                Phone: @Html.DisplayFor(modelItem => item.AccommodationPhoneNumber)
-                <br/>
-                Email: @Html.DisplayFor(modelItem => item.AccommodationEmailAddress)
+                @if (!string.IsNullOrEmpty(item.Accommodation))
+                {
+                    <div>
+                        @Html.DisplayFor(modelItem => item.Accommodation)
+                        <br />
+                        @if (!string.IsNullOrEmpty(item.AccommodationPhoneNumber))
+                        {
+                            <div>Phone: @Html.DisplayFor(modelItem => item.AccommodationPhoneNumber)</div>
+                        }
+                        @if (!string.IsNullOrEmpty(item.AccommodationEmailAddress))
+                        {
+                            <div>Email: @Html.DisplayFor(modelItem => item.AccommodationEmailAddress)</div>
+                        }
+                    </div>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ToDo1)

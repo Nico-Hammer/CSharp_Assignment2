@@ -3,12 +3,12 @@
 @{
     ViewData["Title"] = "Add Trip - Page 3";
 }
-<h1>Add Things To Do in </h1>
+<h1>Add Things To Do in @Model.Destination</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="ThingsTodo">
+        <form asp-action="ThingsTodo" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <input asp-for="ToDo1" class="form-control" />
@@ -26,11 +26,9 @@
             </div>
             <br/>
             <div>
-                <a asp-action="ThingsTodo" >
-                    <button type="submit" class="btn btn-primary">
-                        Save
-                    </button>
-                </a>
+                <button type="submit" class="btn btn-primary">
+                    Save
+                </button>
                 <a asp-action="Index">
                     <button type="button" class="btn btn-default">
                         Cancel
