@@ -2,16 +2,16 @@
 ## Main page
 - [x] Banner at the top of page with text "My Trip Log"
 - [ ] Subheading that displays only if theres text in the ViewData property "Trip to {place} added." (this is done after the whole trip adding process is complete)
-- [ ] Add Trip link should start a 3 page trip info entry process
+- [x] Add Trip link should start a 3 page trip info entry process
 ## First info page
-- [ ] Entry fields for destination, accommodation, start date, end date 
+- [x] Entry fields for destination, accommodation, start date, end date 
 - [x] Destination and dates are mandatory but accommodation is optional
 ## Second info page
 - [ ] Should only show up if the user entered something in the accommodation field of the last page
-- [ ] Entry fields for phone number and email address
+- [x] Entry fields for phone number and email address
 - [ ] Subheading should display "Add Info for {accommodation}
 ## Third info page
-- [ ] Entry fields for 3 things to do
+- [x] Entry fields for 3 things to do
 - [ ] Subheading should display "Add things to Do in {destination}
 - [x] Entry fields are optional
 # Behaviour

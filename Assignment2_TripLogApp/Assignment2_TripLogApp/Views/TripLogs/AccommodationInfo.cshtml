@@ -1,0 +1,38 @@
+@model Assignment2_TripLogApp.Models.TripLog
+
+@{
+    ViewData["Title"] = "Add Trip - Page 2";
+}
+<h1>Add Info for </h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AccommodationInfo" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AccommodationPhoneNumber" class="control-label"></label>
+                <input asp-for="AccommodationPhoneNumber" class="form-control" />
+                <span asp-validation-for="AccommodationPhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccommodationEmailAddress" class="control-label"></label>
+                <input asp-for="AccommodationEmailAddress" class="form-control" />
+                <span asp-validation-for="AccommodationEmailAddress" class="text-danger"></span>
+            </div>
+            <br/>
+            <div>
+                <a asp-action="ThingsTodo" >
+                    <button type="button" class="btn btn-primary">
+                        Next
+                    </button>
+                </a>
+                <a asp-action="Index">
+                    <button type="button" class="btn btn-default">
+                        Cancel
+                    </button>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

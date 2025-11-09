@@ -20,41 +20,26 @@ namespace Assignment2_TripLogApp.Controllers
         }
 
         // GET: TripLogs
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             return View(await _context.TripLogs.ToListAsync());
         }
+        
 
-        // GET: TripLogs/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tripLog = await _context.TripLogs
-                .FirstOrDefaultAsync(m => m.TripId == id);
-            if (tripLog == null)
-            {
-                return NotFound();
-            }
-
-            return View(tripLog);
-        }
-
-        // GET: TripLogs/Create
-        public IActionResult Create()
+        // GET: TripLogs/BasicInfo
+        [HttpGet]
+        public IActionResult BasicInfo()
         {
             return View();
         }
 
-        // POST: TripLogs/Create
+        // POST: TripLogs/BasicInfo
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TripId,Destination,Accommodation,StartDate,EndDate,AccommodationPhoneNumber,AccommodationEmailAddress,ToDo1,ToDo2,ToDo3")] TripLog tripLog)
+        public async Task<IActionResult> BasicInfo([Bind("TripId,Destination,Accommodation,StartDate,EndDate")] TripLog tripLog)
         {
             if (ModelState.IsValid)
             {
@@ -64,29 +49,27 @@ namespace Assignment2_TripLogApp.Controllers
             }
             return View(tripLog);
         }
-
-        // GET: TripLogs/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        
+        // GET: TripLogs/AccommodationInfo
+        [HttpGet]
+        public async Task<IActionResult> AccommodationInfo()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tripLog = await _context.TripLogs.FindAsync(id);
-            if (tripLog == null)
-            {
-                return NotFound();
-            }
-            return View(tripLog);
+            return View();
         }
 
-        // POST: TripLogs/Edit/5
+        // GET: TripLogs/ThingsTodo
+        [HttpGet]
+        public async Task<IActionResult> ThingsTodo()
+        {
+            return View();
+        }
+
+        // POST: TripLogs/ThingsTodo
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TripId,Destination,Accommodation,StartDate,EndDate,AccommodationPhoneNumber,AccommodationEmailAddress,ToDo1,ToDo2,ToDo3")] TripLog tripLog)
+        public async Task<IActionResult> ThingsTodo(int id, [Bind("TripId,Destination,Accommodation,StartDate,EndDate,AccommodationPhoneNumber,AccommodationEmailAddress,ToDo1,ToDo2,ToDo3")] TripLog tripLog)
         {
             if (id != tripLog.TripId)
             {
@@ -114,39 +97,6 @@ namespace Assignment2_TripLogApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(tripLog);
-        }
-
-        // GET: TripLogs/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tripLog = await _context.TripLogs
-                .FirstOrDefaultAsync(m => m.TripId == id);
-            if (tripLog == null)
-            {
-                return NotFound();
-            }
-
-            return View(tripLog);
-        }
-
-        // POST: TripLogs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var tripLog = await _context.TripLogs.FindAsync(id);
-            if (tripLog != null)
-            {
-                _context.TripLogs.Remove(tripLog);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool TripLogExists(int id)

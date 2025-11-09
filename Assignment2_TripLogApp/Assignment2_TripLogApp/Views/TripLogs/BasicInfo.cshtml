@@ -1,0 +1,49 @@
+@model Assignment2_TripLogApp.Models.TripLog
+
+@{
+    ViewData["Title"] = "Add Trip - Page 1";
+}
+
+<h1>Add Trip Destination and Dates</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BasicInfo" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Destination" class="control-label"></label>
+                <input asp-for="Destination" class="form-control" />
+                <span asp-validation-for="Destination" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Accommodation" class="control-label"></label>
+                <input asp-for="Accommodation" class="form-control" />
+                <span asp-validation-for="Accommodation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label">Start Date</label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label">End Date</label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <br/>
+            <div>
+                <a asp-action="AccommodationInfo" >
+                    <button type="button" class="btn btn-primary">
+                        Next
+                    </button>
+                </a>
+                <a asp-action="Index">
+                    <button type="button" class="btn btn-default">
+                        Cancel
+                    </button>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
