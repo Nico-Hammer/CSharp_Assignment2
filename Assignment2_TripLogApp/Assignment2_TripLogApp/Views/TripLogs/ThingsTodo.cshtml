@@ -1,27 +1,31 @@
 @model Assignment2_TripLogApp.Models.TripLog
 
 @{
-    ViewData["Title"] = "Add Trip - Page 3";
+    ViewData["Title"] = "Add Trip - Page 3"; // set the title of the tab
 }
-<h1>Add Things To Do in @Model.Destination</h1>
+<h1>Add Things To Do in @Model.Destination </h1><!-- access TempData to get the destination entered in the first page -->
 
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <!--
+        this form handles the things to do if any any entered, there can be up to three but nothing is required to be entered on this page. 
+        These inputs are subject to the validations in the model then the data is submitted when valid and stored in the TempData
+        -->
         <form asp-action="ThingsTodo" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input asp-for="ToDo1" class="form-control" />
+                <input asp-for="ToDo1" class="form-control"/>
                 <span asp-validation-for="ToDo1" class="text-danger"></span>
             </div>
             <br/>
             <div class="form-group">
-                <input asp-for="ToDo2" class="form-control" />
+                <input asp-for="ToDo2" class="form-control"/>
                 <span asp-validation-for="ToDo2" class="text-danger"></span>
             </div>
             <br/>
             <div class="form-group">
-                <input asp-for="ToDo3" class="form-control" />
+                <input asp-for="ToDo3" class="form-control"/>
                 <span asp-validation-for="ToDo3" class="text-danger"></span>
             </div>
             <br/>
@@ -29,7 +33,7 @@
                 <button type="submit" class="btn btn-primary">
                     Save
                 </button>
-                <a asp-action="Index">
+                <a asp-action="Index"> <!-- send the user back to the index page if they cancel the process -->
                     <button type="button" class="btn btn-default">
                         Cancel
                     </button>

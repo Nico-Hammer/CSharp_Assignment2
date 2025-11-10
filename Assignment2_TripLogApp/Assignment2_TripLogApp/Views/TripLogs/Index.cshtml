@@ -1,11 +1,14 @@
 @using Microsoft.IdentityModel.Tokens
-@model IEnumerable<Assignment2_TripLogApp.Models.TripLog>
+@model IEnumerable<Assignment2_TripLogApp.Models.TripLog> 
 
 @{
-    ViewData["Title"] = "My Trip Log";
-}
-
-@{
+    ViewData["Title"] = "My Trip Log"; // set the title of the tab
+    /*
+     * check if there is anything in the Destination variable of TempData
+     * if there is then add the subheader with the text of "Trip to {destination} added"
+     * and always clear TempData so that TempData is free to store new data and the subheader
+     * disappears when the page is refreshed
+     */
     if (TempData["Destination"]?.ToString().Length > 0)
     {
         <h2>Trip to @TempData["Destination"] added</h2>
@@ -13,46 +16,51 @@
     TempData.Clear();
 }
 <p>
-    <a asp-action="BasicInfo">Add Trip</a>
+    <a asp-action="BasicInfo">Add Trip</a> <!-- add trip button that starts the info adding process -->
 </p>
+<!-- create the headers for the table that displays all the trip information -->
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Destination)
-            </th>
-            <th>
-                Start Date
-            </th>
-            <th>
-                End Date
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Accommodation)
-            </th>
-            <th>
-                Things to do
-            </th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Destination)
+        </th>
+        <th>
+            Start Date
+        </th>
+        <th>
+            End Date
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accommodation)
+        </th>
+        <th>
+            Things to do
+        </th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model) { // loop through all the entities in the database and get their information
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Destination)
             </td>
             <td>
-                @DateOnly.FromDateTime(item.StartDate)
+                @DateOnly.FromDateTime(item.StartDate) <!-- get only the date from the DateTime object -->
             </td>
             <td>
                 @DateOnly.FromDateTime(item.EndDate)
             </td>
             <td>
+                <!--
+                check if the accommodation property string is empty, if not then display any of the information about that
+                accommodation that has a value, otherwise display nothing
+                -->
                 @if (!string.IsNullOrEmpty(item.Accommodation))
                 {
                     <div>
                         @Html.DisplayFor(modelItem => item.Accommodation)
-                        <br />
+                        <br/>
                         @if (!string.IsNullOrEmpty(item.AccommodationPhoneNumber))
                         {
                             <div>Phone: @Html.DisplayFor(modelItem => item.AccommodationPhoneNumber)</div>
@@ -65,6 +73,7 @@
                 }
             </td>
             <td>
+            <!-- show all of the todos in a single row of the table, each on their own line -->
                 @Html.DisplayFor(modelItem => item.ToDo1)
                 <br/>
                 @Html.DisplayFor(modelItem => item.ToDo2)

@@ -1,34 +1,39 @@
 @model Assignment2_TripLogApp.Models.TripLog
 
 @{
-    ViewData["Title"] = "Add Trip - Page 1";
+    ViewData["Title"] = "Add Trip - Page 1"; // set the title of the tab
 }
 
-<h1>Add Trip Destination and Dates</h1>
+<h1>Add Trip Destination and Dates</h1> <!-- subheader -->
 
 <hr />
 <div class="row">
     <div class="col-md-4">
+    <!--
+    form that gets the required information from the user, this form handles the basic trip information of destination
+    accommodation, and start/end date. These inputs are subject to the validations in the model then the data is submitted
+    when valid and stored in the TempData
+    -->
         <form asp-action="BasicInfo" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Destination" class="control-label"></label>
-                <input asp-for="Destination" class="form-control" />
+                <input asp-for="Destination" class="form-control"/>
                 <span asp-validation-for="Destination" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Accommodation" class="control-label"></label>
-                <input asp-for="Accommodation" class="form-control" />
+                <input asp-for="Accommodation" class="form-control"/>
                 <span asp-validation-for="Accommodation" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label">Start Date</label>
-                <input asp-for="StartDate" class="form-control" />
+                <input asp-for="StartDate" class="form-control"/>
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label">End Date</label>
-                <input asp-for="EndDate" class="form-control" />
+                <input asp-for="EndDate" class="form-control"/>
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <br/>
@@ -36,7 +41,7 @@
                 <button type="submit" class="btn btn-primary">
                     Next
                 </button>
-                <a asp-action="Index">
+                <a asp-action="Index"> <!-- send the user back to the index page if they cancel the process -->
                     <button type="button" class="btn btn-default">
                         Cancel
                     </button>

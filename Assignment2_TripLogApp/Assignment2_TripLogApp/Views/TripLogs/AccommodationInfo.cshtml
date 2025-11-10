@@ -3,21 +3,26 @@
 @{
     ViewData["Title"] = "Add Trip - Page 2";
 }
-<h1>Add Info for @Model.Accommodation</h1>
+<h1>Add Info for @Model.Accommodation</h1> <!-- access TempData to get the accommodation entered in the previous page -->
 
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <!--
+        form that gets the information from the user, this form handles the accommodation info if any is entered, but
+        nothing is required to be entered on this page. These inputs are subject to the validations in the model 
+        then the data is submitted when valid and stored in the TempData
+        -->
         <form asp-action="AccommodationInfo" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="AccommodationPhoneNumber" class="control-label"></label>
-                <input asp-for="AccommodationPhoneNumber" class="form-control" />
+                <input asp-for="AccommodationPhoneNumber" class="form-control"/>
                 <span asp-validation-for="AccommodationPhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AccommodationEmailAddress" class="control-label"></label>
-                <input asp-for="AccommodationEmailAddress" class="form-control" />
+                <input asp-for="AccommodationEmailAddress" class="form-control"/>
                 <span asp-validation-for="AccommodationEmailAddress" class="text-danger"></span>
             </div>
             <br/>
@@ -25,7 +30,7 @@
                 <button type="submit" class="btn btn-primary">
                     Next
                 </button>
-                <a asp-action="Index">
+                <a asp-action="Index">  <!-- send the user back to the index page if they cancel the process -->
                     <button type="button" class="btn btn-default">
                         Cancel
                     </button>

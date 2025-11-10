@@ -3,23 +3,27 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"]</title>
+    <title>@ViewData["Title"]</title> <!-- allow each page to set the tab title -->
+    <!-- import bootstrap -->
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/Assignment2_TripLogApp.styles.css" asp-append-version="true"/>
 </head>
 <body>
+<!-- set the header to be consistent across all pages -->
 <div class="p-5 text-center bg-body-tertiary">
     <header>
         <h1>My Trip Log</h1>
     </header>
 </div>
+<!-- render the page content in a new div (created and handled by asp.net core automatically) -->
 <div class="container">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
 </div>
+<!-- import jquery -->
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>

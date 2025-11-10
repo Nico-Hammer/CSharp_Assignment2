@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Assignment2_TripLogApp.Controllers
 {
+    /* add the database to the context of the controller */
     public class TripLogs : Controller
     {
         private readonly AppDbContext _context;
@@ -33,6 +34,10 @@ namespace Assignment2_TripLogApp.Controllers
         [HttpGet]
         public IActionResult BasicInfo()
         {
+            /*
+             * create a new TripLog object and return the view with the entered data if invalid data is entered
+             * otherwise this TripLog object is passed to the post request of this page
+             */
             var tripLog = new TripLog();
             return View(tripLog);
         }
@@ -44,6 +49,10 @@ namespace Assignment2_TripLogApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> BasicInfo(TripLog tripLog)
         {
+            /*
+             * if the model is valid i.e. no data that violates the validations of the model is entered, save all the info
+             * into TempData then call .Keep() so that it persists to the next page
+             */
             if (ModelState.IsValid)
             {
                 TempData["Destination"] = tripLog.Destination;
@@ -51,6 +60,10 @@ namespace Assignment2_TripLogApp.Controllers
                 TempData["StartDate"] = tripLog.StartDate;
                 TempData["EndDate"] = tripLog.EndDate;
                 TempData.Keep();
+                /*
+                 * check if the Accommodation field is empty, if not then take the user to the AccommodationInfo page
+                 * otherwise send the user to the ThingsTodo page
+                 */
                 if (!tripLog.Accommodation.IsNullOrEmpty())
                 {
                     return RedirectToAction("AccommodationInfo");
@@ -60,17 +73,21 @@ namespace Assignment2_TripLogApp.Controllers
                     return RedirectToAction("ThingsTodo");
                 }
             }
-            return View(tripLog);
+            return View(tripLog); // return the view with the entered data if invalid data is entered
         }
         
         // GET: TripLogs/AccommodationInfo
         [HttpGet]
         public async Task<IActionResult> AccommodationInfo()
         {
-            TripLog tripLog = new TripLog();
+            TripLog tripLog = new TripLog(); // create a new TripLog object instance
+            /*
+             * put the TempData Accommodation info into the TripLog object so it can be used to fill out the subheader
+             * on the view, then call .Keep() to make sure all the TempData data persists to the next request
+             */
             tripLog.Accommodation = TempData["Accommodation"].ToString();
             TempData.Keep();
-            return View(tripLog);
+            return View(tripLog); // if any data violates the validations then return the view with the entered data
         }
         
         // POST: TripLogs/AccommodationInfo
@@ -80,20 +97,25 @@ namespace Assignment2_TripLogApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AccommodationInfo(TripLog tripLog)
         {
+            /* store the entered data in TempData then call .Keep() so it persists to the next request*/
             TempData["AccommodationPhoneNumber"] = tripLog.AccommodationPhoneNumber;
             TempData["AccommodationEmailAddress"] = tripLog.AccommodationEmailAddress;
             TempData.Keep();
-            return RedirectToAction("ThingsTodo");
+            return RedirectToAction("ThingsTodo"); // send the user to the ThingsTodo page
         }
 
         // GET: TripLogs/ThingsTodo
         [HttpGet]
         public async Task<IActionResult> ThingsTodo()
         {
-            TripLog tripLog = new TripLog();
+            TripLog tripLog = new TripLog(); // create a new TripLog object instance
+            /*
+             * put the TempData Destination info into the TripLog object so it can be used to fill out the subheader
+             * on the view, then call .Keep() to make sure all the TempData data persists to the next request
+             */
             tripLog.Destination = TempData["Destination"]?.ToString();
             TempData.Keep();
-            return View(tripLog);
+            return View(tripLog); // if any data violates the validations then return the view with the entered data
         }
 
         // POST: TripLogs/ThingsTodo
@@ -103,9 +125,11 @@ namespace Assignment2_TripLogApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ThingsTodo(TripLog tripLog)
         {
+            /* store the form data in TempData */
             TempData["ToDo1"] = tripLog.ToDo1;
             TempData["ToDo2"] = tripLog.ToDo2;
             TempData["ToDo3"] = tripLog.ToDo3;
+            /* create the final TripLog object instance with all the data in TempData */
             tripLog.Destination = TempData["Destination"].ToString();
             tripLog.Accommodation = TempData["Accommodation"]?.ToString();
             tripLog.StartDate = Convert.ToDateTime(TempData["StartDate"]);
@@ -115,7 +139,8 @@ namespace Assignment2_TripLogApp.Controllers
             tripLog.ToDo1 = TempData["ToDo1"]?.ToString();
             tripLog.ToDo2 = TempData["ToDo2"]?.ToString();
             tripLog.ToDo3 = TempData["ToDo3"]?.ToString();
-            TempData.Keep();
+            TempData.Keep(); // persist TempData to the next request for the "Trip to {Destination} added" subheader on the index page
+            /* try to add the TripLog object to the database, if it cant get an id then return a NotFound page otherwise return the error */
             try
             {
                 _context.Add(tripLog);
@@ -132,10 +157,10 @@ namespace Assignment2_TripLogApp.Controllers
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
-            return View(tripLog);
+            return RedirectToAction(nameof(Index)); // send the user back to the index page
         }
 
+        /* check if the TripLog already exists in the database (since we dont edit the logs, this is kind of pointless)*/
         private bool TripLogExists(int id)
         {
             return _context.TripLogs.Any(e => e.TripId == id);
